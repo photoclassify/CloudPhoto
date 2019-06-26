@@ -2,7 +2,6 @@ package com.photo.photo;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -11,8 +10,12 @@ import java.io.InputStream;
 
 public class FileUpload {
 
-    @Value ("${photoStorePath}")
-    private static String photoStorePath;
+    private static String photoStorePath = "/Library/Storage/2017/PhotoCloud/";
+
+    public static String getPhotoStorePath ()
+    {
+        return photoStorePath;
+    }
 
     /**
      * 文件上传处理
@@ -22,7 +25,7 @@ public class FileUpload {
      */
     public static String writeUploadFile(MultipartFile file) {
         String filename = file.getOriginalFilename();
-        String realpath = "photoStorePath";
+        String realpath = photoStorePath;
         File fileDir = new File(realpath);                  //如果没有指定目录 新建一个文件夹
         if (!fileDir.exists())
             fileDir.mkdirs();
@@ -47,6 +50,6 @@ public class FileUpload {
             IOUtils.closeQuietly(input);
             IOUtils.closeQuietly(fos);
         }
-        return "/" + filename;
+        return filename;
     }
 }

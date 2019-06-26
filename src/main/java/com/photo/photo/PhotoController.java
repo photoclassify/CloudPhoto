@@ -2,7 +2,6 @@ package com.photo.photo;
 
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,8 +13,7 @@ public class PhotoController
     @Autowired
     private PhotoRepository photoRepository;
 
-    @Value ("${photoStorePath}")
-    private static String photoStorePath;
+    String photoStorePath = FileUpload.getPhotoStorePath ();
 
 
     String userId = "testUserId";    //TODO 获取userId
@@ -26,7 +24,7 @@ public class PhotoController
     {
 
         String filename = FileUpload.writeUploadFile (file);
-        String tag = PhotoClassify.Classify("photoStorePath" + filename);
+        String tag = PhotoClassify.Classify(photoStorePath+ filename);
         if (filename != null && filename != "errorExt")
         {
             Photo photo = new Photo ();
