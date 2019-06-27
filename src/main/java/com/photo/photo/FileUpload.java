@@ -8,11 +8,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
-public class FileUpload {
+class FileUpload {
 
-    private static String photoStorePath = "/Library/Storage/2017/PhotoCloud/";
+    private static String photoStorePath = "/Library/Storage/2017/PhotoCloud/";     //图片保存的绝对路径
 
-    public static String getPhotoStorePath ()
+    static String getPhotoStorePath ()
     {
         return photoStorePath;
     }
@@ -23,7 +23,7 @@ public class FileUpload {
      * @param file
      * @return
      */
-    public static String writeUploadFile(MultipartFile file) {
+    static String writeUploadFile (MultipartFile file) {
         String filename = file.getOriginalFilename();
         String realpath = photoStorePath;
         File fileDir = new File(realpath);                  //如果没有指定目录 新建一个文件夹
