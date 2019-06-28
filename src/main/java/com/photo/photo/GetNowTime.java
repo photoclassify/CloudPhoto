@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class GetNowTime
 {
-    public static Integer getDate()
+    public static Integer getDate()            //获取年月日+三位数随机数，用于图片命名
     {
         Date currentTime = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd");

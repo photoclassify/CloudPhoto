@@ -2,6 +2,7 @@ package com.photo.photo;
 
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
+import org.apache.commons.io.FilenameUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -40,7 +41,8 @@ public class ThumbnailsMake
         {
             builder = Thumbnails.of (image).size (height, width);
         }
-        builder.outputFormat ("jpg").toFile (toPhoto);
+        String extname = FilenameUtils.getExtension(photoName);
+        builder.outputFormat (extname).toFile (toPhoto);
 
     }
 }
