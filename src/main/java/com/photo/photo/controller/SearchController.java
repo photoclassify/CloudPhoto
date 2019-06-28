@@ -1,6 +1,6 @@
 package com.photo.photo.controller;
 
-import com.photo.photo.WebMvcConfig;
+import com.photo.photo.config.WebMvcConfig;
 import com.photo.photo.entity.Photo;
 import com.photo.photo.repository.PhotoRepository;
 import org.springframework.web.bind.annotation.GetMapping;

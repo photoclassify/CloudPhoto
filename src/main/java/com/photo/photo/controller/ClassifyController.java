@@ -20,7 +20,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping ("/file")
-
 public class ClassifyController
 {
     private static final Logger log = LoggerFactory.getLogger(PhotoUpload.class);
