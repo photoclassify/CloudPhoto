@@ -8,15 +8,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfig implements WebMvcConfigurer {
 
 
-    private String relPhyPath = "/static" + "/";
-    private String absPhyPath = "/img" + "/";           //图片保存的绝对路径
+    private static String relPhyPath = "/static" + "/";         //在项目中/static/的图片的url映射
+    private static String absPhyPath = "/img" + "/";           //图片保存的物理地址的url映射
 
-    public String getRelPhyPath ()
+    public static String getRelPhyPath ()
     {
         return relPhyPath;
     }
 
-    public String getAbsPhyPath ()
+    public static String getAbsPhyPath ()
     {
         return absPhyPath;
     }

@@ -1,5 +1,6 @@
 package com.photo.photo;
 
+import com.photo.photo.entity.Photo;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,7 @@ public class PhotoUpload {
     private static final Logger log = LoggerFactory.getLogger(PhotoUpload.class);
 
     private static String path = "/Library/Storage/2017/PhotoCloud" + "/";     //图片保存的绝对路径
-static String getPhotoStorePath ()
+public static String getPhotoStorePath ()
         {
             return path;
         }
@@ -54,12 +55,12 @@ static String getPhotoStorePath ()
         try {
             file.transferTo(dest);
             log.info("上传成功");
-
             return fileName;
+
         } catch (IOException e) {
             log.error(e.toString(), e);
+            return "上传失败！";
         }
-        return "上传失败！";
     }
 
 

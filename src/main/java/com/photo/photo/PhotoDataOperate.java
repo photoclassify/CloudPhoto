@@ -1,5 +1,7 @@
 package com.photo.photo;
 
+import com.photo.photo.entity.Photo;
+
 public class PhotoDataOperate
 {
 

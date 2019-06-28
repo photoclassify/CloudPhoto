@@ -1,12 +1,12 @@
-package com.photo.photo;
+package com.photo.photo.controller;
 
+import com.photo.photo.*;
+import com.photo.photo.entity.Photo;
+import com.photo.photo.repository.PhotoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +16,8 @@ import java.util.List;
 
 
 @RestController
+@RequestMapping ("/file")
+
 public class ClassifyController
 {
     private static final Logger log = LoggerFactory.getLogger(PhotoUpload.class);
@@ -50,7 +52,7 @@ public class ClassifyController
             ThumbnailsMake.Make(150,150, path, path + th, result) ;
             //↑生成缩略图
 
-            return "上传成功! " + "识别为：" + tag;
+            return  "上传成功! " + "识别为：" + tag;
         }
     }
 
@@ -64,6 +66,7 @@ public class ClassifyController
         List<String> tags = new ArrayList<> ();
         if (!result.contains ("!"))
         {
+            photoRepository.delete (photo);
             return result;
         }
         else

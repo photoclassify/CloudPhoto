@@ -1,4 +1,4 @@
-package com.photo.photo;
+package com.photo.photo.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
