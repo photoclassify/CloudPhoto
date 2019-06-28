@@ -1,4 +1,4 @@
-package com.photo.photo;
+package com.photo.photo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

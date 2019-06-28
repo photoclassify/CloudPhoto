@@ -1,4 +1,4 @@
-package com.photo.photo;
+package com.photo.photo.utils;
 
 import com.photo.photo.entity.Photo;
 import org.apache.commons.io.FilenameUtils;
@@ -18,18 +18,12 @@ public class PhotoUpload {
     private static final Logger log = LoggerFactory.getLogger(PhotoUpload.class);
 
     private static String path = "/Library/Storage/2017/PhotoCloud" + "/";     //图片保存的绝对路径
-public static String getPhotoStorePath ()
+    public static String getPhotoStorePath ()
         {
             return path;
         }
 
 
-
-
-
-
-    //    @PostMapping("/upload")
-    //    @ResponseBody
     public static String upload (MultipartFile file, Photo photo) {
 
         if (file.isEmpty()) {
@@ -64,8 +58,6 @@ public static String getPhotoStorePath ()
     }
 
 
-    //    @PostMapping("/multiUpload")
-    //    @ResponseBody
     public static String multiUpload (HttpServletRequest request, Photo photo)
     {
         List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");

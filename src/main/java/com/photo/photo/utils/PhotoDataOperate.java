@@ -1,4 +1,4 @@
-package com.photo.photo;
+package com.photo.photo.utils;
 
 import com.photo.photo.entity.Photo;
 

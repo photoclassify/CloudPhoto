@@ -1,4 +1,4 @@
-package com.photo.photo;
+package com.photo.photo.utils;
 
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;

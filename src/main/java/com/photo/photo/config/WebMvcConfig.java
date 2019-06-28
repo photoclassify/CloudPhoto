@@ -1,5 +1,6 @@
-package com.photo.photo;
+package com.photo.photo.config;
 
+import com.photo.photo.utils.PhotoUpload;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

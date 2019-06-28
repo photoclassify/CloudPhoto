@@ -1,8 +1,11 @@
 package com.photo.photo.controller;
 
-import com.photo.photo.*;
 import com.photo.photo.entity.Photo;
 import com.photo.photo.repository.PhotoRepository;
+import com.photo.photo.utils.PhotoClassify;
+import com.photo.photo.utils.PhotoDataOperate;
+import com.photo.photo.utils.PhotoUpload;
+import com.photo.photo.utils.ThumbnailsMake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
