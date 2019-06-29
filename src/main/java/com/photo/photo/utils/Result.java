@@ -36,5 +36,4 @@ public class Result
         this.data = data;
     }
 
-
 }
