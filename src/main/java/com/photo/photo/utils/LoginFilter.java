@@ -18,7 +18,7 @@ import java.io.IOException;
  */
 
 @Slf4j
-@WebFilter(filterName="loginFilter",urlPatterns="*.*")
+@WebFilter(filterName="*",urlPatterns="*.*")
 public class LoginFilter implements Filter {
 
     private static final Logger log = LoggerFactory.getLogger(LoginFilter.class);
@@ -29,8 +29,8 @@ public class LoginFilter implements Filter {
      * 拦截器处理方法
      */
     @Override
-    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain fc)
-            throws IOException, ServletException {
+    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain fc) throws IOException, ServletException
+    {
         HttpServletRequest request = (HttpServletRequest)req;
         HttpServletResponse response = (HttpServletResponse)resp;
         String uri = request.getRequestURI();

@@ -3,7 +3,6 @@ package com.photo.photo.service;
 import com.drew.imaging.ImageProcessingException;
 import com.photo.photo.entity.Photo;
 import com.photo.photo.repository.PhotoRepository;
-import com.photo.photo.utils.PhotoDateSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,10 +36,10 @@ public class PhotoService
         photo.setName (photoName);
         photo.setTag (photoTag);
         photo.setUserId (userId);
-                if (photo.getDateDay () == null)
-                {
-                    photo = PhotoDateSet.setDate (photo);
-                }
+//                if (photo.getDateDay () == null)
+//                {
+//                    photo = PhotoDateSet.setDate (photo);
+//                }
 
         this.photoRepository.save (photo);
     }
