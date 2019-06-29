@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping(value="/user")
-public class RegisterController {
+public class UserController
+{
 
     @Autowired
     private UserRepository userRepository;
@@ -20,12 +22,12 @@ public class RegisterController {
     @GetMapping (value = "/register")
     public Integer register(HttpServletRequest request) {
 
-        String userName= request.getParameter("userName");
+        String userName = request.getParameter("userName");
         String pwd = request.getParameter("pwd");
         String rePwd = request.getParameter("rePwd");
-        Boolean registerstate=false;
+        Boolean registerstate = false;
         String str = "";
-        Integer regnum=0;
+        Integer regNum = 0;
 
         if (pwd.equals(rePwd)) {
             user = userRepository.findByUserName(userName);
@@ -35,16 +37,42 @@ public class RegisterController {
                 user.setPwd(pwd);
                 userRepository.save(user);
 
-                regnum=1;
+                regNum = 1;
             } else {
 
-                regnum=0;
+                regNum = 0;
             }
         }else{
 
-            regnum=2;
+            regNum = 2;
         }
-        return regnum;
+        return regNum;
     }
+
+
+    @GetMapping("/login")
+    public Integer login(HttpServletRequest request, HttpSession session)
+    {
+        String userName = request.getParameter("userName");
+        String pwd = request.getParameter("pwd");
+
+        user = userRepository.findByUserNameAndPwd(userName, pwd);
+        boolean loginstate;
+        Integer lognum = 0;
+
+        if (user != null) {
+            session.setAttribute("userLogin", user);
+            loginstate = true;
+            lognum = 1;
+        } else {
+            loginstate = false;
+            lognum = 0;
+        }
+        return lognum;
+    }
+
+
+
+
 }
 

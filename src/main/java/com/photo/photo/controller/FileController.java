@@ -1,9 +1,9 @@
 package com.photo.photo.controller;
 
+import com.drew.imaging.ImageProcessingException;
 import com.photo.photo.entity.Photo;
-import com.photo.photo.repository.PhotoRepository;
+import com.photo.photo.service.PhotoService;
 import com.photo.photo.utils.PhotoClassify;
-import com.photo.photo.utils.PhotoDataOperate;
 import com.photo.photo.utils.PhotoUpload;
 import com.photo.photo.utils.ThumbnailsMake;
 import org.slf4j.Logger;
@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping ("/file")
-public class ClassifyController
+public class FileController
 {
     private static final Logger log = LoggerFactory.getLogger(PhotoUpload.class);
 
@@ -32,25 +32,25 @@ public class ClassifyController
 
 
     @Autowired
-    private PhotoRepository photoRepository;
+    private PhotoService photoService;
 
     @PostMapping ("/upload")
     @ResponseBody
-    public String uploadPhoto(@RequestParam("file") MultipartFile file) throws IOException
+    public String uploadPhoto(@RequestParam("file") MultipartFile file) throws IOException, ImageProcessingException
     {
         Photo photo = new Photo ();
-        photoRepository.save (photo);
+        photoService.save (photo);
         String result = PhotoUpload.upload (file, photo);   //若上传成功，result为文件名;失败则为报错信息。
         if (result.equals ("上传失败，请选择文件") || result.equals ("错误的文件格式") || result.equals ("上传失败！"))
         {
-            photoRepository.delete (photo);
+            photoService.delete (photo);
             return result;
         }
         else
         {
             String tag = PhotoClassify.Classify(path+ result);                  //通过百度云图像识别获取标签
             log.info(tag + result);
-            photoRepository.save(PhotoDataOperate.UpdatePhoto (photo,photo.getPhotoId (),result,tag,userId));     //存储照片信息到数据库
+            this.photoService.save (photo,photo.getPhotoId (),result,tag,userId);     //存储照片信息到数据库
             ThumbnailsMake.Make(150,150, path, path + th, result) ;
             //↑生成缩略图
 
@@ -60,15 +60,15 @@ public class ClassifyController
 
     @PostMapping("/multiUpload")
     @ResponseBody
-    public String multiUploadPhoto(HttpServletRequest request) throws IOException
+    public String multiUploadPhoto(HttpServletRequest request) throws IOException, ImageProcessingException
     {
         Photo photo = new Photo ();
-        photoRepository.save (photo);
+        photoService.save (photo);
         String result = PhotoUpload.multiUpload(request, photo);     //若上传成功，result为文件名;失败则为报错信息。
         List<String> tags = new ArrayList<> ();
         if (!result.contains ("!"))
         {
-            photoRepository.delete (photo);
+            photoService.delete (photo);
             return result;
         }
         else
@@ -82,7 +82,7 @@ public class ClassifyController
                     String tag = PhotoClassify.Classify (path + resultCut[i]);             //通过百度云图像识别获取标签
                     log.info(tag + resultCut[i]);
                     tags.add(tag);
-                    photoRepository.save (PhotoDataOperate.UpdatePhoto (photo,photo.getPhotoId () + i,resultCut[i], tag, userId));  //存储照片信息到数据库
+                    photoService.save (photo,photo.getPhotoId (),result,tag,userId);     //存储照片信息到数据库
                     ThumbnailsMake.Make(150,150, path, path + th, resultCut[i]) ;
                     //↑生成缩略图
                 }
@@ -95,4 +95,5 @@ public class ClassifyController
         }
         return "上传成功! " + tagsString;
     }
+
 }

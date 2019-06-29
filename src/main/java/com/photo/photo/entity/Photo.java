@@ -13,6 +13,39 @@ public class Photo
     private String tag;
     private String userId;
     private String name;
+    private String dateYear;
+    private String dateMonth;
+    private String dateDay;
+
+    public String getDateYear ()
+    {
+        return dateYear;
+    }
+
+    public void setDateYear (String dateYear)
+    {
+        this.dateYear = dateYear;
+    }
+
+    public String getDateMonth ()
+    {
+        return dateMonth;
+    }
+
+    public void setDateMonth (String dateMon)
+    {
+        this.dateMonth = dateMon;
+    }
+
+    public String getDateDay ()
+    {
+        return dateDay;
+    }
+
+    public void setDateDay (String dateDay)
+    {
+        this.dateDay = dateDay;
+    }
 
     public String getName ()
     {
