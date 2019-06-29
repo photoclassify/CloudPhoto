@@ -24,6 +24,13 @@ public class PhotoService
         photoRepository.delete (photo);
     }
 
+    public Photo newPhoto ()
+    {
+        Photo photo = new Photo ();
+        photoRepository.save (photo);
+        return photo;
+    }
+
     public void save (Photo photo)
     {
         photoRepository.save (photo);

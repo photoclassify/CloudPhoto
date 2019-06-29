@@ -42,8 +42,7 @@ public class FileController
     public Result uploadPhoto(@RequestParam("file") MultipartFile file) throws IOException, ImageProcessingException
     {
         Result res = new Result ();
-        Photo photo = new Photo ();
-        photoService.save (photo);
+        Photo photo = photoService.newPhoto ();
         String result = PhotoUpload.upload (file, photo);   //若上传成功，result为文件名;失败则为报错信息。
         if (result.equals ("上传失败，请选择文件") || result.equals ("错误的文件格式") || result.equals ("上传失败！"))
         {
@@ -71,8 +70,7 @@ public class FileController
     {
         Result res = new Result ();
         ArrayList<String> tagList = new ArrayList<> ();
-        Photo photo = new Photo ();
-        photoService.save (photo);
+        Photo photo = photoService.newPhoto ();
         String result = PhotoUpload.multiUpload(request, photo);     //若上传成功，result为文件名;失败则为报错信息。
         if (!result.contains ("!"))
         {
@@ -90,7 +88,7 @@ public class FileController
                     String tag = PhotoClassify.Classify (path + resultCut[i]);             //通过百度云图像识别获取标签
                     log.info(tag + resultCut[i]);
                     tagList.add ("第" + (i + 1) + "张图识别为：" + tag);
-                    photoService.save (photo,photo.getPhotoId (),result,tag,userId);     //存储照片信息到数据库
+                    photoService.save (photo,photo.getPhotoId () + i,resultCut[i],tag,userId);     //存储照片信息到数据库
                     ThumbnailsMake.Make(150,150, path, path + th, resultCut[i]) ;
                     //↑生成缩略图
                 }
