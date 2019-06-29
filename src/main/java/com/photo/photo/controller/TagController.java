@@ -27,7 +27,6 @@ public class TagController
         return photoService.photosByTag (tag, photoPath);
     }
 
-
     @GetMapping (value = "/findAll")
     public List<String> tagList ()
     {

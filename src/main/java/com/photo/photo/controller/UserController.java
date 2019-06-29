@@ -1,7 +1,7 @@
 package com.photo.photo.controller;
 
 import com.photo.photo.entity.User;
-import com.photo.photo.repository.UserRepository;
+import com.photo.photo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +16,8 @@ public class UserController
 {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
+
     private User user = new User();
 
     @GetMapping (value = "/register")
@@ -30,12 +31,13 @@ public class UserController
         Integer regNum = 0;
 
         if (pwd.equals(rePwd)) {
-            user = userRepository.findByUserName(userName);
-            if (user == null) {
+            user = userService.findByUserName(userName);
+            if (user == null)
+            {
                 User user = new User();
                 user.setUserName(userName);
                 user.setPwd(pwd);
-                userRepository.save(user);
+                userService.save(user);
 
                 regNum = 1;
             } else {
@@ -56,7 +58,7 @@ public class UserController
         String userName = request.getParameter("userName");
         String pwd = request.getParameter("pwd");
 
-        user = userRepository.findByUserNameAndPwd(userName, pwd);
+        user = userService.findByUserNameAndPwd(userName, pwd);
         boolean loginstate;
         Integer lognum = 0;
 
