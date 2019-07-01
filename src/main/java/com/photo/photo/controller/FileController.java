@@ -42,7 +42,7 @@ public class FileController
         if (res.getCode () == 1)
         {
             Photo photo = res.getPhoto ();
-            photoService.saveTag (photo, tagService.writeTag (photo.getName (), photo.getPhotoId ()));            //通过百度云图像识别获取标签
+            photoService.saveTag (photo, tagService.writeTag (photo.getName (), photo.getPhotoId (), userId));            //通过百度云图像识别获取标签
             ThumbnailsMake.Make (150, 150, path, path + th, photo.getName ());               //生成缩略图
         }
         return res;

@@ -23,7 +23,7 @@ public class TagService
     public static final String API_KEY = "sQKGNkySVVif7GtnGg529VHC";
     public static final String SECRET_KEY = "R8uPXSIGXgGHXjCjeu37RojtAWGsAk0L";
 
-    public String writeTag(String photoName, Integer photoId) throws JSONException
+    public String writeTag(String photoName, Integer photoId, String userId) throws JSONException
     {
         AipImageClassify aic = new AipImageClassify(APP_ID, API_KEY, SECRET_KEY);
         if (photoName != null)
@@ -43,6 +43,7 @@ public class TagService
                 tag.setScore ((Double) obj.get("score"));
                 tag.setKeyword ((String) obj.get ("keyword"));
                 tag.setPhotoId (photoId);
+                tag.setUserId (userId);
                 tagRepository.save (tag);
                 tagIdList += (tag.getTagId ()+";");
             }

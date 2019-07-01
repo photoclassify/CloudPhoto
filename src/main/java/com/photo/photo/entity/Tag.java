@@ -11,6 +11,7 @@ public class Tag
     @GeneratedValue
     private Integer TagId;
     private Integer PhotoId;
+    private String UserId;
     private String firstRoot;
     private String SecondRoot;
     private String keyword;
@@ -74,5 +75,15 @@ public class Tag
     public void setPhotoId (Integer photoId)
     {
         PhotoId = photoId;
+    }
+
+    public String getUserId ()
+    {
+        return UserId;
+    }
+
+    public void setUserId (String userId)
+    {
+        UserId = userId;
     }
 }
