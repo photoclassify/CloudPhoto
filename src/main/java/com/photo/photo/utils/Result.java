@@ -1,10 +1,12 @@
 package com.photo.photo.utils;
 
+import com.photo.photo.entity.Photo;
+
 public class Result
 {
     private Integer code;
     private String message;
-    private Object data;
+    private Photo photo;
 
     public Integer getCode ()
     {
@@ -26,14 +28,14 @@ public class Result
         this.message = message;
     }
 
-    public Object getData ()
+    public Photo getPhoto ()
     {
-        return data;
+        return photo;
     }
 
-    public void setData (Object data)
+    public void setPhoto (Photo photo)
     {
-        this.data = data;
+        this.photo = photo;
     }
 
 }

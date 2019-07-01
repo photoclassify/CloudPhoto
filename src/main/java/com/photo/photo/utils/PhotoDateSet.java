@@ -17,7 +17,7 @@ public class PhotoDateSet
 
     public static Photo setDate(Photo photo) throws ImageProcessingException, IOException
     {
-        String photoPath = PhotoUpload.getPhotoStorePath () + photo.getName ();
+        String photoPath = _unused_PhotoUpload.getPhotoStorePath () + photo.getName ();
         File photoFile = new File(photoPath);
         Metadata metadata = ImageMetadataReader.readMetadata(photoFile);
 

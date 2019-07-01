@@ -14,8 +14,9 @@ import java.util.List;
 
 
 //@RestController
-public class PhotoUpload {
-    private static final Logger log = LoggerFactory.getLogger(PhotoUpload.class);
+public class _unused_PhotoUpload
+{
+    private static final Logger log = LoggerFactory.getLogger(_unused_PhotoUpload.class);
 
     private static String path = "/Library/Storage/2017/PhotoCloud" + "/";     //图片保存的绝对路径
     public static String getPhotoStorePath ()
@@ -24,48 +25,48 @@ public class PhotoUpload {
         }
 
 
-    public static String upload (MultipartFile file, Photo photo) {
-
-        if (file.isEmpty()) {
-            return "上传失败，请选择文件";
-        }
-
-        String fileName = file.getOriginalFilename();
-        String realpath = path;
-        File fileDir = new File(realpath);                  //如果没有指定目录 新建一个文件夹
-        if (!fileDir.exists())
-            fileDir.mkdirs();
-
-        String extname = FilenameUtils.getExtension(fileName);          //文件格式判断
-        String allowImgFormat = "jpg,jpeg,png";
-        if (!allowImgFormat.contains(extname.toLowerCase())) {
-            log.error ("错误的文件格式");
-            return "错误的文件格式";
-        }
-
-        fileName = String.valueOf (photo.getPhotoId ()) + '_' + GetNowTime.getDate () + "." + extname;
-
-        File dest = new File(realpath + fileName);
-        try {
-            file.transferTo(dest);
-            log.info("上传成功");
-            return fileName;
-
-        } catch (IOException e) {
-            log.error(e.toString(), e);
-            return "上传失败！";
-        }
-    }
+//    public static String upload (MultipartFile file, Photo photo) {
+//
+//        if (file.isEmpty()) {
+//            return "上传失败，请选择文件";
+//        }
+//
+//        String fileName = file.getOriginalFilename();
+//        String realpath = path;
+//        File fileDir = new File(realpath);                  //如果没有指定目录 新建一个文件夹
+//        if (!fileDir.exists())
+//            fileDir.mkdirs();
+//
+//        String extname = FilenameUtils.getExtension(fileName);          //文件格式判断
+//        String allowImgFormat = "jpg,jpeg,png";
+//        if (!allowImgFormat.contains(extname.toLowerCase())) {
+//            log.error ("错误的文件格式");
+//            return "错误的文件格式";
+//        }
+//
+//        fileName = String.valueOf (photo.getPhotoId ()) + '_' + GetNowTime.getDate () + "." + extname;
+//
+//        File dest = new File(realpath + fileName);
+//        try {
+//            file.transferTo(dest);
+//            log.info("上传成功");
+//            return fileName;
+//
+//        } catch (IOException e) {
+//            log.error(e.toString(), e);
+//            return "上传失败！";
+//        }
+//    }
 
 
     public static String multiUpload (HttpServletRequest request, Photo photo)
     {
         List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
-        String fileNameList = "";
         String filePath = path;
         File fileDir = new File(filePath);                  //如果没有指定目录 新建一个文件夹
         if (!fileDir.exists())
             fileDir.mkdirs();
+        String fileNameList = "";
         for (int i = 0; i < files.size(); i++)
         {
             MultipartFile file = files.get(i);
@@ -84,7 +85,8 @@ public class PhotoUpload {
             }
 
             fileName = String.valueOf (photo.getPhotoId () + i) + '_' + GetNowTime.getDate () + "." + extname;
-            fileNameList += (fileName + "!");
+            fileNameList += (fileName +"!");
+            log.info ("fileNameList:" + fileNameList);
 
             File dest = new File(filePath + fileName);
             try

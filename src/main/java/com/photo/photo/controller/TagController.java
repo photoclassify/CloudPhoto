@@ -27,6 +27,7 @@ public class TagController
         return photoService.photosByTag (tag, photoPath);
     }
 
+
     @GetMapping (value = "/findAll")
     public List<String> tagList ()
     {
@@ -39,6 +40,7 @@ public class TagController
     {
         photoService.deleteByTag (tag);
     }
+
 
     @PutMapping (value = "/update/{oldTag}/{newTag}")
     public void tagUpdate (@PathVariable ("oldTag") String oldTag, @PathVariable ("newTag") String newTag)
