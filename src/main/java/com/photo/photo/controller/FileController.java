@@ -31,6 +31,7 @@ public class FileController
 
     @Autowired
     private PhotoService photoService;
+
     @Autowired
     private TagService tagService;
 

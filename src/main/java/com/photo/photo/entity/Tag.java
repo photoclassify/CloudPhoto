@@ -9,22 +9,42 @@ public class Tag
 {
     @Id
     @GeneratedValue
-    private Integer TagId;
-    private Integer PhotoId;
-    private String UserId;
+    private Integer tagId;
+    private Integer photoId;
+    private String userId;
     private String firstRoot;
-    private String SecondRoot;
+    private String secondRoot;
     private String keyword;
     private double score;
 
     public Integer getTagId ()
     {
-        return TagId;
+        return tagId;
     }
 
     public void setTagId (Integer tagId)
     {
-        TagId = tagId;
+        this.tagId = tagId;
+    }
+
+    public Integer getPhotoId ()
+    {
+        return photoId;
+    }
+
+    public void setPhotoId (Integer photoId)
+    {
+        this.photoId = photoId;
+    }
+
+    public String getUserId ()
+    {
+        return userId;
+    }
+
+    public void setUserId (String userId)
+    {
+        this.userId = userId;
     }
 
     public String getFirstRoot ()
@@ -39,12 +59,12 @@ public class Tag
 
     public String getSecondRoot ()
     {
-        return SecondRoot;
+        return secondRoot;
     }
 
     public void setSecondRoot (String secondRoot)
     {
-        SecondRoot = secondRoot;
+        this.secondRoot = secondRoot;
     }
 
     public String getKeyword ()
@@ -67,23 +87,5 @@ public class Tag
         this.score = score;
     }
 
-    public Integer getPhotoId ()
-    {
-        return PhotoId;
-    }
 
-    public void setPhotoId (Integer photoId)
-    {
-        PhotoId = photoId;
-    }
-
-    public String getUserId ()
-    {
-        return UserId;
-    }
-
-    public void setUserId (String userId)
-    {
-        UserId = userId;
-    }
 }

@@ -10,7 +10,9 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+
 
 @Service
 public class TagService
@@ -53,6 +55,21 @@ public class TagService
         {
             return null;
         }
+    }
+
+    public ArrayList<String> listFirstRoot (String userId)
+    {
+        ArrayList<String> firstRoots = new  ArrayList<>();
+        for (Tag tag : tagRepository.findByUserId (userId))
+        {
+            if(tag.getFirstRoot () != null && !firstRoots.contains (tag.getFirstRoot ()))
+            {
+                firstRoots.add(tag.getFirstRoot ());
+            }
+        }
+
+        return firstRoots;
+
     }
 
 }
