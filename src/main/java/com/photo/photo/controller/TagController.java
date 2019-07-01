@@ -5,6 +5,7 @@ import com.photo.photo.service.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -29,9 +30,10 @@ public class TagController
 
 
     @GetMapping (value = "/findAll")
-    public List<String> tagList ()
+    public List<String> tagList (HttpServletRequest request)
     {
-        return photoService.getTagList (photoPath);
+        String userId = request.getParameter("userId");
+        return photoService.getTagList (photoPath, userId);
     }
 
 

@@ -9,4 +9,6 @@ import java.util.List;
 public interface PhotoRepository extends JpaRepository<Photo, Integer>
 {
     List<Photo> findByTag (String tag);
+    List<Photo> findByUserId (String userId);
+
 }

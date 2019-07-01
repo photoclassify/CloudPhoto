@@ -148,9 +148,9 @@ public class PhotoService
 
 
     //获取所有照片的tag
-    public List<String> getTagList (String photoPath)
+    public List<String> getTagList (String photoPath, String userId)
     {
-        List<Photo> allPhotos = photoRepository.findAll ();
+        List<Photo> allPhotos = photoRepository.findByUserId (userId);
         ArrayList<String> photoTags = new ArrayList<> ();
 
         for (int i = 0; i < allPhotos.size () - 1; i++)
@@ -169,7 +169,6 @@ public class PhotoService
         {
             String tag = photo.getTag ();
             photoTags.add (tag);
-
             String name = photo.getName ();
             photoTags.add (photoPath + name);
         }
