@@ -4,6 +4,7 @@ import com.drew.imaging.ImageProcessingException;
 import com.photo.photo.entity.Photo;
 import com.photo.photo.repository.PhotoRepository;
 import com.photo.photo.utils.GetNowTime;
+import com.photo.photo.utils.PhotoDateSet;
 import com.photo.photo.utils.Result;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -31,6 +32,10 @@ public class PhotoService
     public static String getPhotoStorePath ()
     {
         return path;
+    }
+    public static String getTh ()
+    {
+        return th;
     }
 
 
@@ -112,10 +117,10 @@ public class PhotoService
         photo.setPhotoId (photoId);
         photo.setName (photoName);
         photo.setUserId (userId);
-//                if (photo.getDateDay () == null)
-//                {
-//                    photo = PhotoDateSet.setDate (photo);
-//                }
+                if (photo.getDateDay () == null)
+                {
+                    photo = PhotoDateSet.setDate (photo);
+                }
 
         this.photoRepository.save (photo);
     }

@@ -11,6 +11,7 @@ public class Tag
     @GeneratedValue
     private Integer tagId;
     private Integer photoId;
+    private String photoName;
     private String userId;
     private String firstRoot;
     private String secondRoot;
@@ -86,6 +87,17 @@ public class Tag
     {
         this.score = score;
     }
+
+    public String getPhotoName ()
+    {
+        return photoName;
+    }
+
+    public void setPhotoName (String photoName)
+    {
+        this.photoName = photoName;
+    }
+
 
 
 }

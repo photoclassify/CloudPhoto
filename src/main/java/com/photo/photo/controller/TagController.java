@@ -3,12 +3,12 @@ package com.photo.photo.controller;
 import com.photo.photo.config.WebMvcConfig;
 import com.photo.photo.service.PhotoService;
 import com.photo.photo.service.TagService;
+import com.photo.photo.utils.RePhotoInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @RestController
 public class TagController
@@ -26,28 +26,24 @@ public class TagController
 
 
     @GetMapping (value = "/tag")
-    public List<String> allFirstRoot (HttpServletRequest request, HttpSession session)
+    public RePhotoInfo allFirstRoot (HttpServletRequest request, HttpSession session)
     {
         String userId = "testUserId2.0";
-        String operate = request.getParameter("operate");
-        if (operate.equals ("allFirstRoot"))
-            return tagService.listFirstRoot (userId);
-        else
-            return null;
-    }
-
-    @GetMapping (value = "/find/{tag}")
-    public List<String> photoListByTag (@PathVariable ("tag") String tag)
-    {
-        return photoService.photosByTag (tag, photoPath);
-    }
-
-
-    @GetMapping (value = "/findAll")
-    public List<String> tagList (HttpServletRequest request)
-    {
-        String userId = request.getParameter("userId");
-        return photoService.getTagList (photoPath, userId);
+        switch (request.getParameter("operate"))
+        {
+            case "allFirstRoots":
+                return tagService.listFirstRoot (userId);
+            case "allSecondRoots":
+                return tagService.listSecondRoot (request.getParameter ("firstRoot"), userId);
+            case "allKeywords":
+                return tagService.listKeywords (request.getParameter ("firstRoot"), request.getParameter ("secondRoot"), userId);
+            case "allPhotos":
+                return tagService.listPhotos (request.getParameter ("firstRoot"), request.getParameter ("secondRoot"), request.getParameter ("keyword"), userId);
+            case "delete":
+                return tagService.delete (request.getParameter ("firstRoot"), request.getParameter ("secondRoot"), request.getParameter ("keyword"), userId);
+            default:
+                return null;
+        }
     }
 
 
