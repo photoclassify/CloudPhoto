@@ -5,14 +5,29 @@ import java.util.Map;
 
 public class RePhotoInfo
 {
+
     private String photoPath;
     private String thPath;
-    private Map<Object, String> message;
+    private String message;
+    private Map<String, Object> date;
 
     public RePhotoInfo(String photoPath, String thPath)
     {
-        this.setPhotoPath (photoPath);
-        this.setThPath (thPath);
+        this.date = new HashMap<> ();
+        this.photoPath = photoPath;
+        this.thPath = thPath;
+    }
+
+    public RePhotoInfo(String message)
+    {
+        this.date = new HashMap<> ();
+        this.message = message;
+
+    }
+
+    public RePhotoInfo()
+    {
+        this.date = new HashMap<> ();
     }
 
     public String getPhotoPath ()
@@ -35,21 +50,29 @@ public class RePhotoInfo
         this.thPath = thPath;
     }
 
-    public Map<Object, String> getMessage ()
+    public String getMessage ()
     {
         return message;
     }
 
-    public void setMessage (Map<Object, String> message)
+    public void setMessage (String message)
     {
         this.message = message;
     }
 
-    public void setMessage (Object message1, String message2)
+    public Map<String, Object> getDate ()
     {
-        Map<Object, String> res = new HashMap<> ();
-        res.put (message1, message2);
-        this.setMessage (res);
+        return date;
     }
+
+    public void setDate (Map<String, Object> date)
+    {
+        this.date = date;
+    }
+
+
+
+
+
 
 }

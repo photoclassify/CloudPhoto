@@ -5,6 +5,7 @@ import com.photo.photo.entity.Photo;
 import com.photo.photo.repository.PhotoRepository;
 import com.photo.photo.utils.GetNowTime;
 import com.photo.photo.utils.PhotoDateSet;
+import com.photo.photo.utils.RePhotoInfo;
 import com.photo.photo.utils.Result;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -15,8 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Service
@@ -24,6 +23,7 @@ public class PhotoService
 {
     @Autowired
     private PhotoRepository photoRepository;
+
 
     private static final Logger log = LoggerFactory.getLogger(PhotoService.class);
 
@@ -125,89 +125,14 @@ public class PhotoService
         this.photoRepository.save (photo);
     }
 
-
-    //通过tag查询所有照片
-    public List<String> photosByTag (String tag, String photoPath)
+    //显示photo信息
+    public RePhotoInfo showPhoto (String photoName)
     {
-        List<Photo> photos = photoRepository.findByTag (tag);
+        Photo photo = photoRepository.findByName (photoName);
+        RePhotoInfo res = new RePhotoInfo(photo.getTag ());
+        res.getDate ().put ("Photo", photo);
 
-        ArrayList<String> photoNames = new ArrayList<> ();
-
-        for (Photo photo : photos)
-        {
-            if (photo.getName () != null)
-            {
-                String name = photo.getName ();
-                photoNames.add (name);
-            }
-        }
-
-        for (int i = 0; i < photoNames.size (); i++)
-        {
-            String name = photoNames.get (i);
-            photoNames.set (i, photoPath + name);
-        }
-
-        return photoNames;
-    }
-
-
-    //获取所有照片的tag
-    public List<String> getTagList (String photoPath, String userId)
-    {
-        List<Photo> allPhotos = photoRepository.findByUserId (userId);
-        ArrayList<String> photoTags = new ArrayList<> ();
-
-        for (int i = 0; i < allPhotos.size () - 1; i++)
-        {
-            for (int j = allPhotos.size () - 1; j > i; j--)
-            {
-                if (allPhotos.get (j).getTag () == null || allPhotos.get (j).getTag ().equals (allPhotos.get (i).getTag ()))
-                {
-
-                    allPhotos.remove (j);//删除重复元素
-                }
-            }
-        }
-
-        for (Photo photo : allPhotos)
-        {
-            String tag = photo.getTag ();
-            photoTags.add (tag);
-            String name = photo.getName ();
-            photoTags.add (photoPath + name);
-        }
-        return photoTags;
-    }
-
-
-    //删除该tag的所有图片
-    public void deleteByTag(String tag){
-        if(tag != null)
-        {
-            List<Photo> photos = photoRepository.findByTag(tag);
-            for (int i = 0; i < photos.size(); i++)
-            {
-                photoRepository.delete(photos.get(i));
-            }
-
-        }
-    }
-
-
-    //修改类别
-    public void updateTag(String oldTag, String newTag)
-    {
-        if(oldTag!=null && newTag!=null ) {
-
-            List<Photo> photos = photoRepository.findByTag(oldTag);
-            for (int i = 0; i < photos.size(); i++)
-            {
-                photos.get(i).setTag(newTag);
-                photoRepository.save(photos.get(i));
-            }
-        }
-
+        return res;
     }
 
 }

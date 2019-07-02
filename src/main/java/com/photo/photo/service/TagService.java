@@ -3,10 +3,8 @@ package com.photo.photo.service;
 import com.baidu.aip.imageclassify.AipImageClassify;
 import com.photo.photo.config.WebMvcConfig;
 import com.photo.photo.entity.Tag;
-import com.photo.photo.repository.PhotoRepository;
 import com.photo.photo.repository.TagRepository;
 import com.photo.photo.utils.RePhotoInfo;
-import com.photo.photo.utils._unused_PhotoUpload;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,11 +20,6 @@ public class TagService
 {
     @Autowired
     private TagRepository tagRepository;
-    @Autowired
-    private PhotoRepository photoRepository;
-
-    private RePhotoInfo rePhotoInfo = new RePhotoInfo (WebMvcConfig.getAbsPhyPath (), WebMvcConfig.getAbsPhyPath () + PhotoService.getTh ());
-
 
     //设置APPID/AK/SK
     public static final String APP_ID = "16620004";
@@ -38,7 +31,7 @@ public class TagService
         AipImageClassify aic = new AipImageClassify(APP_ID, API_KEY, SECRET_KEY);
         if (photoName != null)
         {
-            String path = _unused_PhotoUpload.getPhotoStorePath () + photoName;
+            String path = PhotoService.getPhotoStorePath () + photoName;
             String tagIdList = "";
             JSONObject res = aic.advancedGeneral (path, new HashMap<> ());
 
@@ -66,65 +59,71 @@ public class TagService
         }
     }
 
+
     public RePhotoInfo listFirstRoot (String userId)
     {
-        Map<Object,String> firstRoots = new HashMap<> ();
+        RePhotoInfo rePhotoInfo = new RePhotoInfo (WebMvcConfig.getAbsPhyPath (), WebMvcConfig.getAbsPhyPath () + PhotoService.getTh ());
+        Map<String, Object> firstRoots = new HashMap<> ();
         for (Tag tag : tagRepository.findByUserId (userId))
         {
             if(tag.getFirstRoot () != null && !firstRoots.containsKey (tag.getFirstRoot ()))
             {
-                firstRoots.put (tag.getFirstRoot (), tag.getPhotoName ());
+                firstRoots.put (tag.getPhotoName (), tag.getFirstRoot ());
             }
         }
-        rePhotoInfo.setMessage (firstRoots);
+        rePhotoInfo.setDate (firstRoots);
         return rePhotoInfo;
 
     }
 
     public RePhotoInfo listSecondRoot (String firstRoot, String userId)
     {
-        Map<Object,String> secondRoots = new HashMap<> ();
+        RePhotoInfo rePhotoInfo = new RePhotoInfo (WebMvcConfig.getAbsPhyPath (), WebMvcConfig.getAbsPhyPath () + PhotoService.getTh ());
+        Map<String, Object> secondRoots = new HashMap<> ();
         for (Tag tag : tagRepository.findByUserIdAndFirstRoot (userId, firstRoot))
         {
             if(tag.getSecondRoot () != null && !secondRoots.containsKey (tag.getSecondRoot ()))
             {
-                secondRoots.put(tag.getSecondRoot (), tag.getPhotoName ());
+                secondRoots.put(tag.getPhotoName (), tag.getSecondRoot ());
             }
         }
-        rePhotoInfo.setMessage (secondRoots);
+        rePhotoInfo.setDate (secondRoots);
         return rePhotoInfo;
     }
 
     public RePhotoInfo listKeywords (String firstRoot, String secondRoot, String userId)
     {
-        Map<Object,String> tagKeywords = new HashMap<> ();
+        RePhotoInfo rePhotoInfo = new RePhotoInfo (WebMvcConfig.getAbsPhyPath (), WebMvcConfig.getAbsPhyPath () + PhotoService.getTh ());
+        Map<String, Object> tagKeywords = new HashMap<> ();
         for (Tag tag : tagRepository.findByUserIdAndFirstRootAndSecondRoot (userId, firstRoot, secondRoot))
         {
             if(tag.getKeyword () != null && !tagKeywords.containsKey (tag.getKeyword ()))
             {
-                tagKeywords.put (tag.getKeyword (), tag.getPhotoName ());
+                tagKeywords.put (tag.getPhotoName (), tag.getKeyword ());
             }
         }
-        rePhotoInfo.setMessage (tagKeywords);
+        rePhotoInfo.setDate (tagKeywords);
         return rePhotoInfo;
     }
 
     public RePhotoInfo listPhotos (String firstRoot, String secondRoot, String keyword, String userId)
     {
-        Map<Object, String> photos = new HashMap<> ();
+        RePhotoInfo rePhotoInfo = new RePhotoInfo (WebMvcConfig.getAbsPhyPath (), WebMvcConfig.getAbsPhyPath () + PhotoService.getTh ());
+        Map<String, Object> photos = new HashMap<> ();
         for (Tag tag : tagRepository.findByUserIdAndFirstRootAndSecondRootAndKeyword (userId, firstRoot, secondRoot, keyword))
         {
             if (tag.getKeyword () != null && ! photos.containsValue (tag.getPhotoName ()))
             {
-                photos.put  ( tag.getScore(), tag.getPhotoName ());
+                photos.put  ( tag.getPhotoName (), tag.getScore());
             }
         }
-        rePhotoInfo.setMessage (photos);
+        rePhotoInfo.setDate (photos);
         return rePhotoInfo;
     }
 
     public RePhotoInfo delete (String firstRoot, String secondRoot, String keyword, String userId)
     {
+        RePhotoInfo rePhotoInfo = new RePhotoInfo ();
         if (firstRoot != null)
         {
             if (secondRoot != null)
@@ -135,7 +134,7 @@ public class TagService
                     {
                         tagRepository.delete (tag);
                     }
-                    rePhotoInfo.setMessage ("删除结果", "删除keyword成功");
+                    rePhotoInfo.getDate ().put ("删除结果", "删除keyword成功");
                     return rePhotoInfo;
                 }
                 else
@@ -144,7 +143,7 @@ public class TagService
                     {
                         tagRepository.delete (tag);
                     }
-                    rePhotoInfo.setMessage ("删除结果", "删除secondRoot成功");
+                    rePhotoInfo.getDate ().put ("删除结果", "删除secondRoot成功");
 
                     return rePhotoInfo;
                 }
@@ -157,13 +156,13 @@ public class TagService
                     {
                         tagRepository.delete (tag);
                     }
-                    rePhotoInfo.setMessage ("删除结果", "删除firstRoot成功");
+                    rePhotoInfo.getDate ().put ("删除结果", "删除firstRoot成功");
                     return rePhotoInfo;
 
                 }
                 else
                 {
-                    rePhotoInfo.setMessage ("删除结果", "删除失败，secondRoot缺失！");
+                    rePhotoInfo.getDate ().put ("删除结果", "删除失败，secondRoot缺失！");
                     return rePhotoInfo;
                 }
             }
@@ -172,14 +171,88 @@ public class TagService
         {
             if (secondRoot != null || keyword != null)
             {
-                rePhotoInfo.setMessage ("删除结果", "删除失败，firstRoot缺失！");
+                rePhotoInfo.getDate ().put ("删除结果", "删除失败，firstRoot缺失！");
                 return rePhotoInfo;
             }
             else
             {
-                rePhotoInfo.setMessage ("删除结果", "删除失败，缺少参数！");
+                rePhotoInfo.getDate ().put ("删除结果", "删除失败，缺少参数！");
                 return rePhotoInfo;
             }
         }
+    }
+
+    public RePhotoInfo update (String newData, String firstRoot, String secondRoot, String keyword, String userId)
+    {
+        RePhotoInfo rePhotoInfo = new RePhotoInfo ();
+        if (firstRoot != null)
+        {
+            if (secondRoot != null)
+            {
+                if (keyword != null)
+                {
+                    for(Tag tag : tagRepository.findByUserIdAndFirstRootAndSecondRootAndKeyword (userId, firstRoot, secondRoot, keyword))
+                    {
+                        tag.setKeyword (newData);
+                        tagRepository.save (tag);
+                    }
+                    rePhotoInfo.getDate ().put ("更新结果", "更新keyword成功");
+                    return rePhotoInfo;
+                }
+                else
+                {
+                    for (Tag tag : tagRepository.findByUserIdAndFirstRootAndSecondRoot (userId, firstRoot, secondRoot))
+                    {
+                        tag.setSecondRoot (newData);
+                        tagRepository.save (tag);
+                    }
+                    rePhotoInfo.getDate ().put ("更新结果", "更新secondRoot成功");
+
+                    return rePhotoInfo;
+                }
+            }
+            else
+            {
+                if (keyword == null)
+                {
+                    for (Tag tag : tagRepository.findByUserIdAndFirstRoot (userId, firstRoot))
+                    {
+                        tag.setFirstRoot (newData);
+                        tagRepository.save (tag);
+                    }
+                    rePhotoInfo.getDate ().put ("更新结果", "更新firstRoot成功");
+                    return rePhotoInfo;
+
+                }
+                else
+                {
+                    rePhotoInfo.getDate ().put ("更新结果", "更新失败，secondRoot缺失！");
+                    return rePhotoInfo;
+                }
+            }
+        }
+        else
+        {
+            if (secondRoot != null || keyword != null)
+            {
+                rePhotoInfo.getDate ().put ("更新结果", "更新失败，firstRoot缺失！");
+                return rePhotoInfo;
+            }
+            else
+            {
+                rePhotoInfo.getDate ().put ("更新结果", "更新失败，缺少参数！");
+                return rePhotoInfo;
+            }
+        }
+    }
+
+    public RePhotoInfo showTag (RePhotoInfo res, String photoTagList)
+    {
+        String[] tagCut = photoTagList.split(";");
+        for(int i = 0; i < tagCut.length; i++)
+        {
+            res.getDate ().put ("tag" + (i + 1), tagRepository.findByTagId (Integer.valueOf (tagCut[i])));
+        }
+        return res;
     }
 }
