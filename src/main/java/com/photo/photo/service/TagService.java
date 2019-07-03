@@ -68,7 +68,7 @@ public class TagService
         {
             if(tag.getFirstRoot () != null && !firstRoots.containsKey (tag.getFirstRoot ()))
             {
-                firstRoots.put (tag.getPhotoName (), tag.getFirstRoot ());
+                firstRoots.put ( tag.getFirstRoot (), tag.getPhotoName ());
             }
         }
         rePhotoInfo.setDate (firstRoots);
@@ -84,7 +84,7 @@ public class TagService
         {
             if(tag.getSecondRoot () != null && !secondRoots.containsKey (tag.getSecondRoot ()))
             {
-                secondRoots.put(tag.getPhotoName (), tag.getSecondRoot ());
+                secondRoots.put(tag.getSecondRoot (), tag.getPhotoName ());
             }
         }
         rePhotoInfo.setDate (secondRoots);
@@ -99,7 +99,7 @@ public class TagService
         {
             if(tag.getKeyword () != null && !tagKeywords.containsKey (tag.getKeyword ()))
             {
-                tagKeywords.put (tag.getPhotoName (), tag.getKeyword ());
+                tagKeywords.put (tag.getKeyword (), tag.getPhotoName ());
             }
         }
         rePhotoInfo.setDate (tagKeywords);

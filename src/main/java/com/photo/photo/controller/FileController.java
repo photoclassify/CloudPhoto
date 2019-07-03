@@ -44,7 +44,7 @@ public class FileController
         {
             Photo photo = res.getPhoto ();
             photoService.saveTag (photo, tagService.writeTag (photo.getName (), photo.getPhotoId (), userId));            //通过百度云图像识别获取标签
-            ThumbnailsMake.Make (150, 150, path, path + th, photo.getName ());               //生成缩略图
+            ThumbnailsMake.Make (330, 250, path, path + th, photo.getName ());               //生成缩略图
         }
         return res;
     }
