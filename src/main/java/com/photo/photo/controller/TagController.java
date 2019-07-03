@@ -4,16 +4,20 @@ import com.photo.photo.config.WebMvcConfig;
 import com.photo.photo.service.PhotoService;
 import com.photo.photo.service.TagService;
 import com.photo.photo.utils.RePhotoInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @RestController
 public class TagController
 {
+    private static final Logger log = LoggerFactory.getLogger(TagController.class);
 
     @Autowired
     private PhotoService photoService;
@@ -27,12 +31,32 @@ public class TagController
 
 
     @GetMapping (value = "/tag")
-    public RePhotoInfo allFirstRoot (HttpServletRequest request, HttpSession session)
+    public RePhotoInfo allFirstRoot (HttpServletRequest request)
     {
+        HttpSession session = request.getSession(false);
+
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null && cookies.length > 0) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().contains("JSESSION"))
+                {
+                    System.out.print("Name:" + cookie.getName() + "\nValue" + cookie.getValue());
+                }
+            }
+        }
+        Object value = session.getAttribute("username");
+        if (value == null) {
+            System.out.print("用户不存在");
+        } else {
+            System.out.print("用户存在" + value);
+        }
+
+
         String userId = "testUserId2.0"; //TODO userID!!!
         switch (request.getParameter("operate"))
         {
             case "allFirstRoots":
+                System.out.println (session.getAttribute ("username"));
                 return tagService.listFirstRoot (userId);
             case "allSecondRoots":
                 return tagService.listSecondRoot (request.getParameter ("firstRoot"), userId);
@@ -43,7 +67,7 @@ public class TagController
             case "delete":
                 return tagService.delete (request.getParameter ("firstRoot"), request.getParameter ("secondRoot"), request.getParameter ("keyword"), userId);
             case "update":
-                return tagService.update (request.getParameter ("newDate"), request.getParameter ("firstRoot"), request.getParameter ("secondRoot"), request.getParameter ("keyword"), userId);
+                return tagService.update (request.getParameter ("newData"), request.getParameter ("firstRoot"), request.getParameter ("secondRoot"), request.getParameter ("keyword"), userId);
 
             default:
                 return null;
@@ -62,8 +86,8 @@ public class TagController
             return tagService.showTag (res, tags);
         } else
         {
-            res.getDate ().put ("error", "图片信息有误，无法获取");
-            res.getDate ().put ("tags", tags);
+            res.getData ().put ("error", "图片信息有误，无法获取");
+            res.getData ().put ("tags", tags);
             return res;
         }
     }

@@ -130,7 +130,7 @@ public class PhotoService
     {
         Photo photo = photoRepository.findByName (photoName);
         RePhotoInfo res = new RePhotoInfo(photo.getTag ());
-        res.getDate ().put ("Photo", photo);
+        res.getData ().put ("Photo", photo);
 
         return res;
     }

@@ -71,7 +71,7 @@ public class TagService
                 firstRoots.put ( tag.getFirstRoot (), tag.getPhotoName ());
             }
         }
-        rePhotoInfo.setDate (firstRoots);
+        rePhotoInfo.setData (firstRoots);
         return rePhotoInfo;
 
     }
@@ -87,7 +87,7 @@ public class TagService
                 secondRoots.put(tag.getSecondRoot (), tag.getPhotoName ());
             }
         }
-        rePhotoInfo.setDate (secondRoots);
+        rePhotoInfo.setData (secondRoots);
         return rePhotoInfo;
     }
 
@@ -102,7 +102,7 @@ public class TagService
                 tagKeywords.put (tag.getKeyword (), tag.getPhotoName ());
             }
         }
-        rePhotoInfo.setDate (tagKeywords);
+        rePhotoInfo.setData (tagKeywords);
         return rePhotoInfo;
     }
 
@@ -117,7 +117,7 @@ public class TagService
                 photos.put  ( tag.getPhotoName (), tag.getScore());
             }
         }
-        rePhotoInfo.setDate (photos);
+        rePhotoInfo.setData (photos);
         return rePhotoInfo;
     }
 
@@ -134,7 +134,7 @@ public class TagService
                     {
                         tagRepository.delete (tag);
                     }
-                    rePhotoInfo.getDate ().put ("删除结果", "删除keyword成功");
+                    rePhotoInfo.getData ().put ("删除结果", "删除keyword成功");
                     return rePhotoInfo;
                 }
                 else
@@ -143,7 +143,7 @@ public class TagService
                     {
                         tagRepository.delete (tag);
                     }
-                    rePhotoInfo.getDate ().put ("删除结果", "删除secondRoot成功");
+                    rePhotoInfo.getData ().put ("删除结果", "删除secondRoot成功");
 
                     return rePhotoInfo;
                 }
@@ -156,13 +156,13 @@ public class TagService
                     {
                         tagRepository.delete (tag);
                     }
-                    rePhotoInfo.getDate ().put ("删除结果", "删除firstRoot成功");
+                    rePhotoInfo.getData ().put ("删除结果", "删除firstRoot成功");
                     return rePhotoInfo;
 
                 }
                 else
                 {
-                    rePhotoInfo.getDate ().put ("删除结果", "删除失败，secondRoot缺失！");
+                    rePhotoInfo.getData ().put ("删除结果", "删除失败，secondRoot缺失！");
                     return rePhotoInfo;
                 }
             }
@@ -171,12 +171,12 @@ public class TagService
         {
             if (secondRoot != null || keyword != null)
             {
-                rePhotoInfo.getDate ().put ("删除结果", "删除失败，firstRoot缺失！");
+                rePhotoInfo.getData ().put ("删除结果", "删除失败，firstRoot缺失！");
                 return rePhotoInfo;
             }
             else
             {
-                rePhotoInfo.getDate ().put ("删除结果", "删除失败，缺少参数！");
+                rePhotoInfo.getData ().put ("删除结果", "删除失败，缺少参数！");
                 return rePhotoInfo;
             }
         }
@@ -184,7 +184,7 @@ public class TagService
 
     public RePhotoInfo update (String newData, String firstRoot, String secondRoot, String keyword, String userId)
     {
-        RePhotoInfo rePhotoInfo = new RePhotoInfo ();
+        RePhotoInfo rePhotoInfo = new RePhotoInfo (newData);
         if (firstRoot != null)
         {
             if (secondRoot != null)
@@ -196,7 +196,7 @@ public class TagService
                         tag.setKeyword (newData);
                         tagRepository.save (tag);
                     }
-                    rePhotoInfo.getDate ().put ("更新结果", "更新keyword成功");
+                    rePhotoInfo.getData ().put ("更新结果", "更新keyword成功");
                     return rePhotoInfo;
                 }
                 else
@@ -206,7 +206,7 @@ public class TagService
                         tag.setSecondRoot (newData);
                         tagRepository.save (tag);
                     }
-                    rePhotoInfo.getDate ().put ("更新结果", "更新secondRoot成功");
+                    rePhotoInfo.getData ().put ("更新结果", "更新secondRoot成功");
 
                     return rePhotoInfo;
                 }
@@ -220,13 +220,13 @@ public class TagService
                         tag.setFirstRoot (newData);
                         tagRepository.save (tag);
                     }
-                    rePhotoInfo.getDate ().put ("更新结果", "更新firstRoot成功");
+                    rePhotoInfo.getData ().put ("更新结果", "更新firstRoot成功");
                     return rePhotoInfo;
 
                 }
                 else
                 {
-                    rePhotoInfo.getDate ().put ("更新结果", "更新失败，secondRoot缺失！");
+                    rePhotoInfo.getData ().put ("更新结果", "更新失败，secondRoot缺失！");
                     return rePhotoInfo;
                 }
             }
@@ -235,12 +235,12 @@ public class TagService
         {
             if (secondRoot != null || keyword != null)
             {
-                rePhotoInfo.getDate ().put ("更新结果", "更新失败，firstRoot缺失！");
+                rePhotoInfo.getData ().put ("更新结果", "更新失败，firstRoot缺失！");
                 return rePhotoInfo;
             }
             else
             {
-                rePhotoInfo.getDate ().put ("更新结果", "更新失败，缺少参数！");
+                rePhotoInfo.getData ().put ("更新结果", "更新失败，缺少参数！");
                 return rePhotoInfo;
             }
         }
@@ -251,7 +251,7 @@ public class TagService
         String[] tagCut = photoTagList.split(";");
         for(int i = 0; i < tagCut.length; i++)
         {
-            res.getDate ().put ("tag" + (i + 1), tagRepository.findByTagId (Integer.valueOf (tagCut[i])));
+            res.getData ().put ("tag" + (i + 1), tagRepository.findByTagId (Integer.valueOf (tagCut[i])));
         }
         return res;
     }

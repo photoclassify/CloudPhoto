@@ -9,25 +9,25 @@ public class RePhotoInfo
     private String photoPath;
     private String thPath;
     private String message;
-    private Map<String, Object> date;
+    private Map<String, Object> data;
 
     public RePhotoInfo(String photoPath, String thPath)
     {
-        this.date = new HashMap<> ();
+        this.data = new HashMap<> ();
         this.photoPath = photoPath;
         this.thPath = thPath;
     }
 
     public RePhotoInfo(String message)
     {
-        this.date = new HashMap<> ();
+        this.data = new HashMap<> ();
         this.message = message;
 
     }
 
     public RePhotoInfo()
     {
-        this.date = new HashMap<> ();
+        this.data = new HashMap<> ();
     }
 
     public String getPhotoPath ()
@@ -60,14 +60,14 @@ public class RePhotoInfo
         this.message = message;
     }
 
-    public Map<String, Object> getDate ()
+    public Map<String, Object> getData ()
     {
-        return date;
+        return data;
     }
 
-    public void setDate (Map<String, Object> date)
+    public void setData (Map<String, Object> data)
     {
-        this.date = date;
+        this.data = data;
     }
 
 

@@ -1,5 +1,15 @@
 server:
   port: 8080
+  connection-timeout:
+  max-http-header-size:
+  servlet:
+    session:
+      cookie:
+        max-age: 1800
+        http-only: true
+      timeout: 1800
+
+
 
 spring:
   datasource:
