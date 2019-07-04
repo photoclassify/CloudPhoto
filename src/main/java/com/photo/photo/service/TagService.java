@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -64,7 +65,8 @@ public class TagService
     {
         RePhotoInfo rePhotoInfo = new RePhotoInfo (WebMvcConfig.getAbsPhyPath (), WebMvcConfig.getAbsPhyPath () + PhotoService.getTh ());
         Map<String, Object> firstRoots = new HashMap<> ();
-        for (Tag tag : tagRepository.findByUserId (userId))
+        List<Tag> allTags = tagRepository.findByUserId (userId);
+        for (Tag tag : allTags)
         {
             if(tag.getFirstRoot () != null && !firstRoots.containsKey (tag.getFirstRoot ()))
             {
@@ -80,7 +82,8 @@ public class TagService
     {
         RePhotoInfo rePhotoInfo = new RePhotoInfo (WebMvcConfig.getAbsPhyPath (), WebMvcConfig.getAbsPhyPath () + PhotoService.getTh ());
         Map<String, Object> secondRoots = new HashMap<> ();
-        for (Tag tag : tagRepository.findByUserIdAndFirstRoot (userId, firstRoot))
+        List<Tag> allTags = tagRepository.findByUserIdAndFirstRoot (userId, firstRoot);
+        for (Tag tag : allTags)
         {
             if(tag.getSecondRoot () != null && !secondRoots.containsKey (tag.getSecondRoot ()))
             {
@@ -95,7 +98,8 @@ public class TagService
     {
         RePhotoInfo rePhotoInfo = new RePhotoInfo (WebMvcConfig.getAbsPhyPath (), WebMvcConfig.getAbsPhyPath () + PhotoService.getTh ());
         Map<String, Object> tagKeywords = new HashMap<> ();
-        for (Tag tag : tagRepository.findByUserIdAndFirstRootAndSecondRoot (userId, firstRoot, secondRoot))
+        List<Tag> allTags = tagRepository.findByUserIdAndFirstRootAndSecondRoot (userId, firstRoot, secondRoot);
+        for (Tag tag : allTags)
         {
             if(tag.getKeyword () != null && !tagKeywords.containsKey (tag.getKeyword ()))
             {
@@ -110,7 +114,8 @@ public class TagService
     {
         RePhotoInfo rePhotoInfo = new RePhotoInfo (WebMvcConfig.getAbsPhyPath (), WebMvcConfig.getAbsPhyPath () + PhotoService.getTh ());
         Map<String, Object> photos = new HashMap<> ();
-        for (Tag tag : tagRepository.findByUserIdAndFirstRootAndSecondRootAndKeyword (userId, firstRoot, secondRoot, keyword))
+        List<Tag> allTags = tagRepository.findByUserIdAndFirstRootAndSecondRootAndKeyword (userId, firstRoot, secondRoot, keyword);
+        for (Tag tag : allTags)
         {
             if (tag.getKeyword () != null && ! photos.containsValue (tag.getPhotoName ()))
             {
@@ -130,7 +135,8 @@ public class TagService
             {
                 if (keyword != null)
                 {
-                    for (Tag tag : tagRepository.findByUserIdAndFirstRootAndSecondRootAndKeyword (userId, firstRoot, secondRoot, keyword))
+                    List<Tag> allTags = tagRepository.findByUserIdAndFirstRootAndSecondRootAndKeyword (userId, firstRoot, secondRoot, keyword);
+                    for (Tag tag : allTags)
                     {
                         tagRepository.delete (tag);
                     }
@@ -139,7 +145,8 @@ public class TagService
                 }
                 else
                 {
-                    for (Tag tag : tagRepository.findByUserIdAndFirstRootAndSecondRoot (userId, firstRoot, secondRoot))
+                    List<Tag> allTags = tagRepository.findByUserIdAndFirstRootAndSecondRoot (userId, firstRoot, secondRoot);
+                    for (Tag tag : allTags)
                     {
                         tagRepository.delete (tag);
                     }
@@ -152,7 +159,8 @@ public class TagService
             {
                 if (keyword == null)
                 {
-                    for (Tag tag : tagRepository.findByUserIdAndFirstRoot (userId, firstRoot))
+                    List<Tag> allTags = tagRepository.findByUserIdAndFirstRoot (userId, firstRoot);
+                    for (Tag tag : allTags)
                     {
                         tagRepository.delete (tag);
                     }
@@ -191,7 +199,8 @@ public class TagService
             {
                 if (keyword != null)
                 {
-                    for(Tag tag : tagRepository.findByUserIdAndFirstRootAndSecondRootAndKeyword (userId, firstRoot, secondRoot, keyword))
+                    List<Tag> allTags = tagRepository.findByUserIdAndFirstRootAndSecondRootAndKeyword (userId, firstRoot, secondRoot, keyword);
+                    for (Tag tag : allTags)
                     {
                         tag.setKeyword (newData);
                         tagRepository.save (tag);
@@ -201,7 +210,8 @@ public class TagService
                 }
                 else
                 {
-                    for (Tag tag : tagRepository.findByUserIdAndFirstRootAndSecondRoot (userId, firstRoot, secondRoot))
+                    List<Tag> allTags = tagRepository.findByUserIdAndFirstRootAndSecondRoot (userId, firstRoot, secondRoot);
+                    for (Tag tag : allTags)
                     {
                         tag.setSecondRoot (newData);
                         tagRepository.save (tag);
@@ -215,7 +225,8 @@ public class TagService
             {
                 if (keyword == null)
                 {
-                    for (Tag tag : tagRepository.findByUserIdAndFirstRoot (userId, firstRoot))
+                    List<Tag> allTags = tagRepository.findByUserIdAndFirstRoot (userId, firstRoot);
+                    for (Tag tag : allTags)
                     {
                         tag.setFirstRoot (newData);
                         tagRepository.save (tag);
@@ -254,5 +265,23 @@ public class TagService
             res.getData ().put ("tag" + (i + 1), tagRepository.findByTagId (Integer.valueOf (tagCut[i])));
         }
         return res;
+    }
+
+
+    public RePhotoInfo findByNameLike(String keyword, String userId)
+    {
+        RePhotoInfo rePhotoInfo = new RePhotoInfo (WebMvcConfig.getAbsPhyPath (), WebMvcConfig.getAbsPhyPath () + PhotoService.getTh ());
+        Map<String, Object> photos = new HashMap<> ();
+        // 一定要加 "%"+参数名+"%"
+        List<Tag> allTags = tagRepository.findByKeywordLikeAndUserId ("%" + keyword + "%", userId);
+        for (Tag tag : allTags)
+        {
+            if (tag.getKeyword () != null)
+            {
+                photos.put  ( tag.getPhotoName (), tag.getKeyword ());
+            }
+        }
+        rePhotoInfo.setData (photos);
+        return rePhotoInfo;
     }
 }

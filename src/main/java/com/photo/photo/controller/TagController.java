@@ -88,4 +88,22 @@ public class TagController
             return res;
         }
     }
+
+    @RequestMapping("/search")
+    public RePhotoInfo findByNameLike(HttpServletRequest request)
+    {
+        String message = UserIdFromRequest.getUserId (request);
+        String userId = "testUserId2.0";
+        //        switch (message)
+        //        {
+        //            case "error, 无session！":
+        //            case "error, session中未能获取userId":
+        //                return (new RePhotoInfo (message));
+        //            default:
+        //                userId = message;
+        //
+        //        }
+
+        return tagService.findByNameLike (request.getParameter ("keyword"), userId);
+    }
 }
