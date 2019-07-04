@@ -4,15 +4,17 @@ import com.drew.imaging.ImageProcessingException;
 import com.photo.photo.entity.Photo;
 import com.photo.photo.service.PhotoService;
 import com.photo.photo.service.TagService;
-import com.photo.photo.utils._unused_PhotoUpload;
-import com.photo.photo.utils.Result;
-import com.photo.photo.utils.ThumbnailsMake;
+import com.photo.photo.utils.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 
@@ -20,13 +22,13 @@ import java.io.IOException;
 @RequestMapping ("/file")
 public class FileController
 {
-    private static final Logger log = LoggerFactory.getLogger(_unused_PhotoUpload.class);
+    private static final Logger log = LoggerFactory.getLogger(FileController.class);
 
-    private static String path = _unused_PhotoUpload.getPhotoStorePath ();
+    private static String path = PhotoService.getPhotoStorePath ();
+
+    MySessionContext myc = MySessionContext.getInstance();
 
     private String th = "th/";
-
-    String userId = "testUserId2.0";   //TODO 获取userId
 
 
     @Autowired
@@ -36,9 +38,20 @@ public class FileController
     private TagService tagService;
 
     @ResponseBody
-    @PostMapping ("/upload")
-    public Result uploadPhoto(@RequestParam("file") MultipartFile file) throws IOException, ImageProcessingException
+    @RequestMapping ("/upload")
+    public Result uploadPhoto(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws IOException, ImageProcessingException
     {
+        String message = UserIdFromRequest.getUserId (request);
+        String userId;
+        switch (message)
+        {
+            case "error, 无session！":
+            case "error, session中未能获取userId":
+                return (new Result (message));
+            default:
+                userId = message;
+
+        }
         Result res = photoService.upload (file, userId);                                                          //处理上传的图片
         if (res.getCode () == 1)
         {

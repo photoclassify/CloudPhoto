@@ -1,12 +1,12 @@
 server:
   port: 8080
   connection-timeout:
-  max-http-header-size:
+  max-http-header-size: 8024
   servlet:
     session:
       cookie:
         max-age: 1800
-        http-only: true
+        http-only:
       timeout: 1800
 
 

@@ -28,6 +28,15 @@ public class Result
         this.message = message;
     }
 
+    public Result ()
+    {
+    }
+
+    public Result (String message)
+    {
+        this.message = message;
+    }
+
     public Photo getPhoto ()
     {
         return photo;
