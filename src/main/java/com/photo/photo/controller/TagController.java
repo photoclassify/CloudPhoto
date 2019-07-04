@@ -31,16 +31,16 @@ public class TagController
     public RePhotoInfo allFirstRoot (HttpServletRequest request)
     {
         String message = UserIdFromRequest.getUserId (request);
-        String userId;
-        switch (message)
-        {
-            case "error, 无session！":
-            case "error, session中未能获取userId":
-                return (new RePhotoInfo (message));
-            default:
-                userId = message;
-
-        }
+        String userId = "testUserId2.0";
+        //        switch (message)
+//        {
+//            case "error, 无session！":
+//            case "error, session中未能获取userId":
+//                return (new RePhotoInfo (message));
+//            default:
+//                userId = message;
+//
+//        }
 
         switch (request.getParameter("operate"))
         {

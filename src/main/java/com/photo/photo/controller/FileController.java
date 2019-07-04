@@ -42,16 +42,16 @@ public class FileController
     public Result uploadPhoto(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws IOException, ImageProcessingException
     {
         String message = UserIdFromRequest.getUserId (request);
-        String userId;
-        switch (message)
-        {
-            case "error, 无session！":
-            case "error, session中未能获取userId":
-                return (new Result (message));
-            default:
-                userId = message;
-
-        }
+        String userId = "testUserId2.0";
+//        switch (message)
+//        {
+//            case "error, 无session！":
+//            case "error, session中未能获取userId":
+//                return (new Result (message));
+//            default:
+//                userId = message;
+//
+//        }
         Result res = photoService.upload (file, userId);                                                          //处理上传的图片
         if (res.getCode () == 1)
         {
