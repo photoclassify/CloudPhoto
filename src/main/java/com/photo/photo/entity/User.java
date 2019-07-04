@@ -10,9 +10,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    //private String sn;
     private String userName;
     private String pwd;
+    private String email;
 
     public User(){
 
@@ -47,11 +47,11 @@ public class User {
         this.pwd = pwd;
     }
 
-//    public String getSn() {
-//        return sn;
-//    }
-//
-//    public void setSn(String sn) {
-//        this.sn = sn;
-//    }
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

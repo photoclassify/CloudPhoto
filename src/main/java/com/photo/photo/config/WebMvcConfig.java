@@ -1,6 +1,6 @@
 package com.photo.photo.config;
 
-import com.photo.photo.utils._unused_PhotoUpload;
+import com.photo.photo.service.PhotoService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -25,7 +25,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(relPhyPath + "**").addResourceLocations("classpath:/static/");
-        registry.addResourceHandler(absPhyPath + "**").addResourceLocations("file:" + _unused_PhotoUpload.getPhotoStorePath ());
+        registry.addResourceHandler(absPhyPath + "**").addResourceLocations("file:" + PhotoService.getPhotoStorePath ());
 
     }
 

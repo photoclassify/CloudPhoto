@@ -29,3 +29,14 @@ spring:
       max-file-size: 100MB # 单个文件大小
       max-request-size: 100MB # 设置总上传的数据大小
       enabled: true
+
+  mail:
+    host: smtp.qq.com
+    password: aztdcaiojtrlbfif
+    username: 957529483@qq.com
+    port: 587
+    protocol: smtp
+    default-encoding: UTF-8
+    properties:
+      mail.smtp.socketFactory.fallback: true
+      mail.smtp.starttls.enable: true
