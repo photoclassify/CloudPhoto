@@ -135,4 +135,10 @@ public class PhotoService
         return res;
     }
 
+    //删除photo信息
+    public void deletePhotoByName (String photoName)
+    {
+        photoRepository.delete (photoRepository.findByName (photoName));
+    }
+
 }

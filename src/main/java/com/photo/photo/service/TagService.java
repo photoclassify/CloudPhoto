@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -271,17 +272,38 @@ public class TagService
     public RePhotoInfo findByNameLike(String keyword, String userId)
     {
         RePhotoInfo rePhotoInfo = new RePhotoInfo (WebMvcConfig.getAbsPhyPath (), WebMvcConfig.getAbsPhyPath () + PhotoService.getTh ());
-        Map<String, Object> photos = new HashMap<> ();
+        Map<String, List<String>> photos = new HashMap<> ();
         // 一定要加 "%"+参数名+"%"
         List<Tag> allTags = tagRepository.findByKeywordLikeAndUserId ("%" + keyword + "%", userId);
         for (Tag tag : allTags)
         {
             if (tag.getKeyword () != null)
             {
-                photos.put  ( tag.getPhotoName (), tag.getKeyword ());
+                if(photos.containsKey (tag.getPhotoName ()))
+                {
+                    photos.get (tag.getPhotoName ()).add (tag.getKeyword ());
+                }
+                else
+                {
+                    ArrayList<String> keywords = new ArrayList<> ();
+                    keywords.add(tag.getKeyword ());
+                    photos.put (tag.getPhotoName (), keywords);
+                }
             }
         }
-        rePhotoInfo.setData (photos);
+
+        Map<String, Object> tempPhotos = new HashMap<> ();
+        for (String key : photos.keySet ())
+        {
+            tempPhotos.put (key, photos.get (key));
+        }
+        rePhotoInfo.setData (tempPhotos);
         return rePhotoInfo;
+    }
+
+    //删除photo信息
+    public void deleteTagByName (String photoName)
+    {
+        tagRepository.delete (tagRepository.findByPhotoName (photoName));
     }
 }

@@ -8,6 +8,7 @@ import java.util.List;
 public interface TagRepository extends JpaRepository<Tag, Integer>
 {
     Tag findByTagId (Integer tagId);
+    Tag findByPhotoName (String photoName);
     List<Tag> findByUserId (String userId);
     List<Tag> findByUserIdAndFirstRoot (String userId, String firstRoot);
     List<Tag> findByUserIdAndFirstRootAndSecondRoot (String userId, String firstRoot, String  secondRoot);

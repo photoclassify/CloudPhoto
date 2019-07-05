@@ -106,4 +106,12 @@ public class TagController
 
         return tagService.findByNameLike (request.getParameter ("keyword"), userId);
     }
+
+    @RequestMapping("/delete")
+    public void deletePhoto (HttpServletRequest request)
+    {
+        String photoName = request.getAttribute ("photoName").toString ();
+        tagService.deleteTagByName (photoName);
+        photoService.deletePhotoByName (photoName);
+    }
 }
