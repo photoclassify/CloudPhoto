@@ -1,8 +1,8 @@
 package com.photo.photo.controller;
 
 import com.photo.photo.entity.User;
-import com.photo.photo.utils.SendMail;
 import com.photo.photo.service.UserService;
+import com.photo.photo.utils.SendMail;
 import org.apache.commons.lang.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,13 +83,16 @@ public class UserController
 
         user = userService.findByUserNameAndPwd(userName, pwd);
 
-        if (user != null) {
+        if (user != null && user.getUserName ().equals (userName))
+        {
             session.setAttribute("userId",userName);
             session.setMaxInactiveInterval(30*60);//以秒为单位，即在没有活动30分钟后，session将失效
             //写cookie并返回
             String sessionId = session.getId();
             Cookie cookie = new Cookie("JSESSIONID", sessionId);
+            cookie.setMaxAge(60*60*24);
             cookie.setPath("/");
+            cookie.setDomain("192.168.151.77");
             response.addCookie(cookie);
             return  1;
         } else {

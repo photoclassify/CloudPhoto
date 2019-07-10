@@ -162,6 +162,9 @@ public class SpiderController {
     public static List<String> searchOnline(@PathVariable("tag") String tag) throws Exception {
         String path = "https://www.duitang.com/search/?kw="+tag+"&type=feed";
         String filePath = "/Library/Storage/2017/PhotoCloud/txt/";
+        File fileDir = new File(filePath);                                                      //如果没有指定目录 新建一个文件夹
+        if (!fileDir.exists())
+            fileDir.mkdirs();
 
         aLinkFile = new File(filePath + "ALinks.txt");
         imgLinkFile = new File(filePath + "ImgLinks.txt");

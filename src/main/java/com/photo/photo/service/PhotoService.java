@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 
-
+//@Component
 @Service
 public class PhotoService
 {
@@ -76,7 +76,7 @@ public class PhotoService
         File dest = new File(realpath + fileName);
         try {
             file.transferTo(dest);
-            this.save (photo,photo.getPhotoId (),fileName,userId);                          //存储照片信息到数据库
+            this.save (photo,photo.getPhotoId (),fileName,userId);                              //存储照片信息到数据库
             log.info("上传成功, " + "," + fileName);
             res.setCode (1);
             res.setMessage ("上传成功");
@@ -105,6 +105,7 @@ public class PhotoService
     }
 
     //写入photoTag
+//    @Async
     public void saveTag (Photo photo, String tag)
     {
         photo.setTag (tag);
@@ -128,8 +129,12 @@ public class PhotoService
     //显示photo信息
     public RePhotoInfo showPhoto (String photoName)
     {
-        Photo photo = photoRepository.findByName (photoName);
-        RePhotoInfo res = new RePhotoInfo(photo.getTag ());
+
+        Photo photo;
+        photo = photoRepository.findByName (photoName);
+        RePhotoInfo res = new RePhotoInfo();
+        String tag = photo.getTag ();
+        res.setMessage (tag);
         res.getData ().put ("Photo", photo);
 
         return res;

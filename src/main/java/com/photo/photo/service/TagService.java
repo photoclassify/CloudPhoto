@@ -8,6 +8,8 @@ import com.photo.photo.utils.RePhotoInfo;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,20 +18,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 @Service
 public class TagService
 {
     @Autowired
     private TagRepository tagRepository;
 
+    private static final Logger log = LoggerFactory.getLogger(TagService.class);
+
+
     //设置APPID/AK/SK
     public static final String APP_ID = "16620004";
     public static final String API_KEY = "sQKGNkySVVif7GtnGg529VHC";
     public static final String SECRET_KEY = "R8uPXSIGXgGHXjCjeu37RojtAWGsAk0L";
 
-    public String writeTag(String photoName, Integer photoId, String userId) throws JSONException             //图像识别，获取tag的id们返回
+    public String writeTag(String photoName, Integer photoId, String userId) throws JSONException         //图像识别，获取tag的id们返回
     {
+        log.info("开始图像识别");
+        long start = System.currentTimeMillis();
+
         AipImageClassify aic = new AipImageClassify(APP_ID, API_KEY, SECRET_KEY);
         if (photoName != null)
         {
@@ -52,11 +59,15 @@ public class TagService
                 tag.setUserId (userId);
                 tagRepository.save (tag);
                 tagIdList += (tag.getTagId ()+";");
+                log.info (tag.getKeyword ());
             }
 
+            long end = System.currentTimeMillis();
+            log.info("完成图像识别，耗时：" + (end - start) + "毫秒");
             return tagIdList;
         }else
         {
+            log.info("图像识别失败，未能获取图片名");
             return null;
         }
     }

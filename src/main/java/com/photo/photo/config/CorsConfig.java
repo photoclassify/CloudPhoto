@@ -1,41 +1,48 @@
 package com.photo.photo.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
-@Configuration
-public class CorsConfig implements WebMvcConfigurer
-{                                                   //跨域
-    private CorsConfiguration buildConfig() {
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.addAllowedOrigin("*"); // 1允许任何域名使用
-        corsConfiguration.addAllowedHeader("*"); // 2允许任何头
-        corsConfiguration.addAllowedMethod("*"); // 3允许任何方法（post、get等）
-        return corsConfiguration;
-    }
+public class CorsConfig implements javax.servlet.Filter {
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
 
-    @Bean
-    public CorsFilter corsFilter()
-    {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", buildConfig()); // 4
-        return new CorsFilter(source);
     }
 
     @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins("*").allowedMethods("GET", "POST", "OPTIONS", "PUT")
-                .allowedHeaders("Content-Type", "X-Requested-With", "accept", "Origin", "Access-Control-Request-Method",
-                        "Access-Control-Request-Headers")
-                .exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials")
-                .allowCredentials(true).maxAge(3600);
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
+
+        //支持所有域的跨域调用
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        String origin = request.getHeader("Origin");
+        if (origin != null && !"".equals(origin)) {
+            response.addHeader("Access-Control-Allow-Origin", origin);
+        }
+
+        //前端自定义头header时，需要设置Access-Control-Allow-Headers
+        //支持所有带头的跨域调用
+        String headers = request.getHeader("Access-Control-Allow-Headers");
+        if (headers != null && !"".equals(headers)) {
+            response.addHeader("Access-Control-Allow-Headers", headers);
+        }
+
+
+        //带Cookie的时候，origin必须是全匹配，不能使用*,或者使用上方的获取后再设置，支持所有的域
+//        response.addHeader("Access-Control-Allow-Origin","*");
+        response.addHeader("Access-Control-Allow-Method", "*");
+//        response.addHeader("Access-Control-Allow-Headers","Content-Type");
+        response.addHeader("Access-Control-Max-Age", "3600");
+        response.addHeader("Access-Control-Allow-Credentials", "true");
+
+
+        filterChain.doFilter(servletRequest, response);
     }
 
+    @Override
+    public void destroy() {
+
+    }
 }
-
-

@@ -13,7 +13,14 @@ public class UserIdFromRequest
 
     private static final Logger log = LoggerFactory.getLogger(UserIdFromRequest.class);
 
-    public static String  getUserId (HttpServletRequest request)
+    public static String getUserId (HttpServletRequest request)
+    {
+        HttpSession session = getSession (request);
+
+        return getUID (session);
+    }
+
+    public static HttpSession getSession (HttpServletRequest request)
     {
         HttpSession session = request.getSession(false);
         Cookie[] cookies = request.getCookies();
@@ -25,6 +32,20 @@ public class UserIdFromRequest
                 }
             }
         }
+        return session;
+    }
+
+    public static String getUserId (HttpServletRequest request, String sessionId)
+    {
+        HttpSession session = request.getSession(false);
+        session = myc.getSession (sessionId);
+
+        return getUID (session);
+    }
+
+
+    private static String getUID (HttpSession session)
+    {
         if (session == null)
         {
             log.info ("error, 无session！");
