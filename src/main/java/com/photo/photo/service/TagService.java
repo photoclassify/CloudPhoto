@@ -135,7 +135,9 @@ public class TagService
             }
         }
         rePhotoInfo.setData (photos);
+
         return rePhotoInfo;
+
     }
 
     public RePhotoInfo delete (String firstRoot, String secondRoot, String keyword, String userId)

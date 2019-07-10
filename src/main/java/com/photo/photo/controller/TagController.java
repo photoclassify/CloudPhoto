@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Map;
 
 @RestController
 public class TagController
@@ -25,7 +27,7 @@ public class TagController
     private TagService tagService;
 
     @RequestMapping (value = "/tag")
-    public RePhotoInfo allFirstRoot (HttpServletRequest request,  HttpServletResponse response)
+    public Object allFirstRoot (HttpServletRequest request,  HttpServletResponse response)
     {
 
         String userId;
@@ -51,7 +53,20 @@ public class TagController
             case "allKeywords":
                 return tagService.listKeywords (request.getParameter ("firstRoot"), request.getParameter ("secondRoot"), userId);
             case "allPhotos":
-                return tagService.listPhotos (request.getParameter ("firstRoot"), request.getParameter ("secondRoot"), request.getParameter ("keyword"), userId);
+            {
+                //                return tagService.listPhotos (request.getParameter ("firstRoot"), request.getParameter ("secondRoot"), request.getParameter ("keyword"), userId);
+                //------------------------------------前端要求：返回所有图片信息--------------------------------
+
+                ArrayList<RePhotoInfo> resList = new ArrayList<> ();
+                RePhotoInfo rpi = tagService.listPhotos (request.getParameter ("firstRoot"), request.getParameter ("secondRoot"), request.getParameter ("keyword"), userId);
+                resList.add (rpi);
+                Map<String, Object> photos = rpi.getData ();
+                for (String key : photos.keySet ())
+                {
+                    resList.add (getPhotoInfo (key));
+                }
+                return resList;
+            }
             case "delete":
                 return tagService.delete (request.getParameter ("firstRoot"), request.getParameter ("secondRoot"), request.getParameter ("keyword"), userId);
             case "update":
@@ -77,16 +92,8 @@ public class TagController
 //
 //        }
 
-        RePhotoInfo res = photoService.showPhoto (request.getParameter ("photoName"));              //为res中添加数据结构photo中的数据
-        String tags = res.getMessage ();
-        if (tags != null)
-        {
-            return tagService.showTag (res, tags);
-        } else
-        {
-            res.getData ().put ("error", "图片信息有误，无法获取");
-            return res;
-        }
+        String photoName = request.getParameter ("photoName");
+        return getPhotoInfo (photoName);
     }
 
     @RequestMapping("/search")
@@ -112,5 +119,20 @@ public class TagController
         String photoName = request.getAttribute ("photoName").toString ();
         tagService.deleteTagByName (photoName);
         photoService.deletePhotoByName (photoName);
+    }
+
+    public RePhotoInfo getPhotoInfo (String photoName)
+    {
+        RePhotoInfo res = photoService.showPhoto (photoName);              //为res中添加数据结构photo中的数据
+        String tags = res.getMessage ();
+        if (tags != null)
+        {
+            res.setMessage (photoName);
+            return tagService.showTag (res, tags);
+        } else
+        {
+            res.getData ().put ("error", "图片信息有误，无法获取");
+            return res;
+        }
     }
 }

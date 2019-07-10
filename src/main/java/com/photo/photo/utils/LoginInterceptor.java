@@ -35,7 +35,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         //判断用户Name是否存在，不存在就跳转到登录界面
         if(userId==null ){
             //System.out.println("这是路径地址："+request.getRequestURI());
-            response.sendRedirect("/user/login");
+            response.sendRedirect(request.getRemoteAddr() + "/myweb/LoginPage.jsp");
             return false;
         }else{
             return true;
