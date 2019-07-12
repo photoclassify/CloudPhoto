@@ -34,8 +34,8 @@ public class TagController
         String message = UserIdFromRequest.getUserId (request);
         switch (message)
         {
-            case "error, 无session！":
-            case "error, session中未能获取userId":
+            case "error, 无发获取到登陆用户信息！":
+            case "error, cookie中未能获取userId":
                 return (new RePhotoInfo (message));
             default:
                 userId = message;
@@ -103,8 +103,8 @@ public class TagController
         String userId;
         switch (message)
         {
-            case "error, 无session！":
-            case "error, session中未能获取userId":
+            case "error, 无发获取到登陆用户信息！":
+            case "error, cookie中未能获取userId":
                 return (new RePhotoInfo (message));
             default:
                 userId = message;
@@ -116,9 +116,12 @@ public class TagController
     @RequestMapping("/delete")
     public void deletePhoto (HttpServletRequest request)
     {
-        String photoName = request.getAttribute ("photoName").toString ();
-        tagService.deleteTagByName (photoName);
-        photoService.deletePhotoByName (photoName);
+        String photoName = request.getParameter ("photoName");
+        if (photoName != null)
+        {
+            tagService.deleteTagByName (photoName);
+            photoService.deletePhotoByName (photoName);
+        }
     }
 
     public RePhotoInfo getPhotoInfo (String photoName)

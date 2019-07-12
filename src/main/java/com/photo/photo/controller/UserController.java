@@ -45,12 +45,12 @@ public class UserController
 
 
     @GetMapping (value = "/register")
-    public Integer register(HttpServletRequest request) {
+    public int register(HttpServletRequest request) {
 
         String userName = request.getParameter("userName");
         String pwd = request.getParameter("pwd");
         String emailaddress = request.getParameter("email");
-        Integer regNum = 0;
+        int regNum = 0;
 
         user = userService.findByUserName(userName);
         if (user == null && userName !=null && pwd !=null)
@@ -62,7 +62,6 @@ public class UserController
             userService.save(user);
             regNum = 1;
         } else {
-
             regNum = 0;
         }
 

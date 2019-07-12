@@ -11,14 +11,14 @@ public class RePhotoInfo
     private String message;
     private Map<String, Object> data;
 
-    public RePhotoInfo(String photoPath, String thPath)
+    public RePhotoInfo (String photoPath, String thPath)
     {
         this.data = new HashMap<> ();
         this.photoPath = photoPath;
         this.thPath = thPath;
     }
 
-    public RePhotoInfo(String message)
+    public RePhotoInfo (String message)
     {
         this.data = new HashMap<> ();
         this.message = message;

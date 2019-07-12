@@ -99,8 +99,8 @@ public class FileController
         String userId;
         switch (message)
         {
-            case "error, 无session！":
-            case "error, session中未能获取userId":
+            case "error, 无发获取到登陆用户信息！":
+            case "error, cookie中未能获取userId":
                 return (new Result (message));
             default:
                 userId = message;

@@ -317,6 +317,10 @@ public class TagService
     //删除photo信息
     public void deleteTagByName (String photoName)
     {
-        tagRepository.delete (tagRepository.findByPhotoName (photoName));
+        List<Tag> tagList = tagRepository.findByPhotoName (photoName);
+        for (Tag tag : tagList)
+        {
+            tagRepository.delete (tag);
+        }
     }
 }

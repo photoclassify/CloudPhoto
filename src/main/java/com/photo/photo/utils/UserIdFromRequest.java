@@ -48,13 +48,13 @@ public class UserIdFromRequest
     {
         if (session == null)
         {
-            log.info ("error, 无session！");
-            return "error, 无session！";
+            log.info ("error, 无发获取到登陆用户信息！");
+            return "error, 无发获取到登陆用户信息！";
         }
         String  userId;
         if (session.getAttribute("userId") == null) {
-            log.info("error, session中未能获取userId");
-            return "error, session中未能获取userId";
+            log.info("error, cookie中未能获取userId");
+            return "error, cookie中未能获取userId";
         } else {
             userId = session.getAttribute("userId").toString ();
             log.info("用户存在" + userId);
