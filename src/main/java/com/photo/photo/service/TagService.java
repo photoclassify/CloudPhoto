@@ -44,22 +44,28 @@ public class TagService
             String tagIdList = "";
             JSONObject res = aic.advancedGeneral (path, new HashMap<> ());
 
-            JSONArray results = res.getJSONArray ("result");
-            for (int i = 0; i < 5; i++)
+            try
             {
-                Tag tag = new Tag ();
-                JSONObject obj = (JSONObject) results.get (i);
-                String[] tagRoot = ((String)obj.get("root")).split("-");
-                tag.setFirstRoot (tagRoot[0]);
-                tag.setSecondRoot (tagRoot[1]);
-                tag.setScore ((Double) obj.get("score"));
-                tag.setKeyword ((String) obj.get ("keyword"));
-                tag.setPhotoId (photoId);
-                tag.setPhotoName (photoName);
-                tag.setUserId (userId);
-                tagRepository.save (tag);
-                tagIdList += (tag.getTagId ()+";");
-                log.info (tag.getKeyword ());
+                JSONArray results = res.getJSONArray ("result");
+                for (int i = 0; i < 5; i++)
+                {
+                    Tag tag = new Tag ();
+                    JSONObject obj = (JSONObject) results.get (i);
+                    String[] tagRoot = ((String) obj.get ("root")).split ("-");
+                    tag.setFirstRoot (tagRoot[0]);
+                    tag.setSecondRoot (tagRoot[1]);
+                    tag.setScore ((Double) obj.get ("score"));
+                    tag.setKeyword ((String) obj.get ("keyword"));
+                    tag.setPhotoId (photoId);
+                    tag.setPhotoName (photoName);
+                    tag.setUserId (userId);
+                    tagRepository.save (tag);
+                    tagIdList += (tag.getTagId () + ";");
+                    log.info (tag.getKeyword ());
+                }
+            } catch (JSONException e)
+            {
+                e.printStackTrace ();
             }
 
             long end = System.currentTimeMillis();
